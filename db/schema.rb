@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_27_204050) do
+ActiveRecord::Schema.define(version: 2020_03_27_204120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "groups", force: :cascade do |t|
+    t.bigint "home_id", null: false
+    t.bigint "person_id", null: false
+    t.boolean "enabled"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["home_id"], name: "index_groups_on_home_id"
+    t.index ["person_id"], name: "index_groups_on_person_id"
+  end
 
   create_table "homes", force: :cascade do |t|
     t.string "name"
@@ -53,6 +63,8 @@ ActiveRecord::Schema.define(version: 2020_03_27_204050) do
     t.index ["task_id"], name: "index_todos_on_task_id"
   end
 
+  add_foreign_key "groups", "homes"
+  add_foreign_key "groups", "people"
   add_foreign_key "tasks", "homes"
   add_foreign_key "todos", "people"
   add_foreign_key "todos", "tasks"
