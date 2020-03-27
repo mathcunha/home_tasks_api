@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_27_204018) do
+ActiveRecord::Schema.define(version: 2020_03_27_204050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,5 +41,19 @@ ActiveRecord::Schema.define(version: 2020_03_27_204018) do
     t.index ["home_id"], name: "index_tasks_on_home_id"
   end
 
+  create_table "todos", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "person_id", null: false
+    t.boolean "done"
+    t.datetime "when"
+    t.datetime "due"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id"], name: "index_todos_on_person_id"
+    t.index ["task_id"], name: "index_todos_on_task_id"
+  end
+
   add_foreign_key "tasks", "homes"
+  add_foreign_key "todos", "people"
+  add_foreign_key "todos", "tasks"
 end
